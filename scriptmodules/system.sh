@@ -91,7 +91,7 @@ function conf_build_vars() {
 
     # calculate build concurrency based on cores and available memory
     __jobs=1
-    local unit=512
+    local unit=256
     isPlatform "64bit" && unit=$(($unit + 256))
     if [[ "$(nproc)" -gt 1 ]]; then
         local nproc="$(nproc)"
@@ -393,9 +393,6 @@ function get_platform() {
             Vero4K|Vero4KPlus)
                 __platform="vero4k"
                 ;;
-            "Allwinner sun8i Family")
-                __platform="armv7-mali"
-                ;;
             *)
                 # jetsons can be identified by device tree or soc0/family (depending on the L4T version used)
                 # refer to the nv.sh script in the L4T DTS for a similar implementation
@@ -413,6 +410,9 @@ function get_platform() {
                         *rockpro64*)
                             __platform="rockpro64"
                             ;;
+                        *sun50i-h6)
+                           __platform="sun50i-h6"
+                           ;;
                     esac
                 elif [[ -e "/sys/devices/soc0/family" ]]; then
                     case "$(tr -d '\0' < /sys/devices/soc0/family)" in
@@ -617,4 +617,9 @@ function platform_vero4k() {
     cpu_armv7 "cortex-a7"
     __default_cflags="-I/opt/vero3/include -L/opt/vero3/lib"
     __platform_flags+=(mali gles)
+}
+
+function platform_sun50i-h6() {
+    cpu_armv8 "cortex-a53"
+    __platform_flags+=(gles gles3 gles31) kms)
 }
