@@ -81,6 +81,9 @@ function build_sdl2() {
         # disable vulkan and X11 video support
         conf_flags+=("--disable-video-x11")
     fi
+    if isPlatform "sun50i-h6"; then
+        conf_flags+=("--disable-video-x11")
+    fi
     ! isPlatform "x11" && conf_flags+=("--disable-video-vulkan")
     isPlatform "mali" && conf_flags+=("--enable-video-mali" "--disable-video-opengl")
     isPlatform "rpi" && conf_flags+=("--enable-video-rpi")
