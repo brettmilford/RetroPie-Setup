@@ -16,7 +16,11 @@ rp_module_section="depends"
 rp_module_flags=""
 
 function get_ver_sdl2() {
-    echo "2.0.10"
+    if isPlatform "sun50i-h6"; then
+    	echo "2.0.20"
+    else
+        echo "2.0.10"
+    fi
 }
 
 function get_pkg_ver_sdl2() {
