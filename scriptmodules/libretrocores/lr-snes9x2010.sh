@@ -14,7 +14,7 @@ rp_module_desc="Super Nintendo emu - Snes9x 1.52 based port for libretro"
 rp_module_help="Previously called lr-snes9x-next\n\nROM Extensions: .bin .smc .sfc .fig .swc .mgd .zip\n\nCopy your SNES roms to $romdir/snes"
 rp_module_licence="NONCOM https://raw.githubusercontent.com/libretro/snes9x2010/master/docs/snes9x-license.txt"
 rp_module_repo="git https://github.com/libretro/snes9x2010.git master"
-rp_module_section="opt arm=main"
+rp_module_section="opt arm=main aarch64=main"
 
 function _update_hook_lr-snes9x2010() {
     # move from old location and update emulators.cfg
