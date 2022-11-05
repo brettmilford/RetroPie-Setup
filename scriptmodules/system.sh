@@ -621,5 +621,5 @@ function platform_vero4k() {
 
 function platform_sun50i-h6() {
     cpu_armv8 "cortex-a53"
-    __platform_flags+=(gles gles3 gles31 kms)
+    __platform_flags+=(armbian gles gles3 gles31 kms)
 }
