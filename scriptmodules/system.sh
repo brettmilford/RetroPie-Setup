@@ -410,9 +410,12 @@ function get_platform() {
                         *rockpro64*)
                             __platform="rockpro64"
                             ;;
-                        *sun50i-h6)
-                           __platform="sun50i-h6"
-                           ;;
+                        *sun8i-h2*|*sun8i-h3*)
+                            __platform="sun8i-h3"
+                            ;;
+                        *sun50i-h6*)
+                            __platform="sun50i-h6"
+                            ;;
                     esac
                 elif [[ -e "/sys/devices/soc0/family" ]]; then
                     case "$(tr -d '\0' < /sys/devices/soc0/family)" in
@@ -617,6 +620,12 @@ function platform_vero4k() {
     cpu_armv7 "cortex-a7"
     __default_cflags="-I/opt/vero3/include -L/opt/vero3/lib"
     __platform_flags+=(mali gles)
+}
+
+function platform_sun8i-h3() {
+    cpu_armv7 "cortex-a7"
+    cpu_arm_state
+    __platform_flags+=(armbian mesa kms gles)
 }
 
 function platform_sun50i-h6() {

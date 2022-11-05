@@ -16,7 +16,7 @@ rp_module_section="depends"
 rp_module_flags=""
 
 function get_ver_sdl2() {
-    if isPlatform "sun50i-h6"; then
+    if isPlatform "armbian"; then
     	echo "2.0.20"
     else
         echo "2.0.10"
@@ -81,7 +81,7 @@ function build_sdl2() {
         # disable vulkan and X11 video support
         conf_flags+=("--disable-video-x11")
     fi
-    if isPlatform "sun50i-h6"; then
+    if isPlatform "armbian"; then
         conf_flags+=("--disable-video-x11")
     fi
     ! isPlatform "x11" && conf_flags+=("--disable-video-vulkan")
