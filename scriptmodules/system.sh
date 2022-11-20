@@ -416,6 +416,12 @@ function get_platform() {
                         *sun50i-h6*)
                             __platform="sun50i-h6"
                             ;;
+                        *sun50i-h616*)
+                           __platform="sun50i-h616"
+                           ;;
+                        *rk3399*)
+                           __platform="rk3399"
+                           ;;
                     esac
                 elif [[ -e "/sys/devices/soc0/family" ]]; then
                     case "$(tr -d '\0' < /sys/devices/soc0/family)" in
@@ -631,4 +637,14 @@ function platform_sun8i-h3() {
 function platform_sun50i-h6() {
     cpu_armv8 "cortex-a53"
     __platform_flags+=(armbian gles gles3 gles31 kms)
+}
+
+function platform_sun50i-h616() {
+    cpu_armv8 "cortex-a53"
+    __platform_flags+=(armbian kms gles gles3 gles31)
+}
+
+function platform_rk3399() {
+    cpu_armv8 "cortex-a53"
+    __platform_flags+=(armbian kms gles gles3 gles31)
 }
