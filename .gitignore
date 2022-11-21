@@ -12,6 +12,3 @@ Thumbs.db
 # Generated files
 logs/
 tmp/
-
-# 3rd Party Repos
-ext/*
