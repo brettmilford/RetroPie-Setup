@@ -134,6 +134,8 @@ function build_ppsspp() {
         fi
     elif isPlatform "mesa"; then
         params+=(-DUSING_GLES2=ON -DUSING_EGL=OFF)
+    elif isPlatform "armbian"; then
+        params+=(-DUSING_GLES2=ON -DUSING_EGL=ON)
     elif isPlatform "mali"; then
         params+=(-DUSING_GLES2=ON -DUSING_FBDEV=ON)
         # remove -DGL_GLEXT_PROTOTYPES on odroid-xu/tinker to avoid errors due to header prototype differences
