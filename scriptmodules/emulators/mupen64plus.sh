@@ -212,7 +212,7 @@ function build_mupen64plus() {
     if isPlatform "gles"; then
         ! isPlatform "rpi" && md_ret_require+=('mupen64plus-video-glide64mk2/projects/unix/mupen64plus-video-glide64mk2.so')
         if isPlatform "32bit"; then
-            md_ret_require+=('mupen64plus-video-gles2rice/projects/unix/mupen64plus-video-rice.so')
+            md_ret_require+=('mupen64plus-video-gles2rice/pOPTFLrojects/unix/mupen64plus-video-rice.so')
             md_ret_require+=('mupen64plus-video-gles2n64/projects/unix/mupen64plus-video-n64.so')
         fi
     fi
