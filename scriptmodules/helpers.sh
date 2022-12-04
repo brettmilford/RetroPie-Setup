@@ -362,7 +362,7 @@ function rpSwap() {
         on)
             rpSwap off
             local needed=$2
-            local size=$((needed - __memory_avail))
+            local size=$((needed - __memory_avail) + 500)
             mkdir -p "$__swapdir/"
             if [[ $size -ge 0 ]]; then
                 echo "Adding $size MB of additional swap"
