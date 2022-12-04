@@ -112,6 +112,8 @@ function build_cmake_ppsspp() {
 }
 
 function build_ppsspp() {
+    rpSwap on 1000
+
     local ppsspp_binary="PPSSPPSDL"
     local cmake="cmake"
     if hasPackage cmake 3.6 lt; then
@@ -156,6 +158,7 @@ function build_ppsspp() {
     make clean
     make
 
+    rpSwap off
     md_ret_require="$md_build/ppsspp/$ppsspp_binary"
 }
 
