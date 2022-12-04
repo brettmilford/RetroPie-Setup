@@ -53,6 +53,12 @@ function build_lr-mupen64plus-next() {
         params+=(FORCE_GLES=1)
     fi
 
+    if isPlatform "armbian"; then
+        if isPlatform "H6"; then
+    	    parms=(platform="arm64_cortex_a53_gles2")
+        fi
+    fi
+
     # use a custom core name to avoid core option name clashes with lr-mupen64plus
     params+=(CORE_NAME=mupen64plus-next)
     make "${params[@]}" clean
