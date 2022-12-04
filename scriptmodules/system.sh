@@ -91,7 +91,7 @@ function conf_build_vars() {
 
     # calculate build concurrency based on cores and available memory
     __jobs=1
-    local unit=256
+    local unit=512
     isPlatform "64bit" && unit=$(($unit + 256))
     if [[ "$(nproc)" -gt 1 ]]; then
         local nproc="$(nproc)"
