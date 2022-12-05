@@ -225,7 +225,7 @@ function build_mupen64plus() {
         fi
         if isPlatform "32bit"; then
             if ! isPlatform "armbian"; then
-                md_ret_require+=('mupen64plus-video-gles2rice/pOPTFLrojects/unix/mupen64plus-video-rice.so')
+                md_ret_require+=('mupen64plus-video-gles2rice/projects/unix/mupen64plus-video-rice.so')
             fi
             md_ret_require+=('mupen64plus-video-gles2n64/projects/unix/mupen64plus-video-n64.so')
         fi
