@@ -161,7 +161,7 @@ function sources_mupen64plus() {
 }
 
 function build_mupen64plus() {
-    rpSwap on 1500
+    rpSwap on 2000
 
     local dir
     local params=()
