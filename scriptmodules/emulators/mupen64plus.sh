@@ -41,7 +41,7 @@ function _get_repos_mupen64plus() {
         repos+=('gizmo98 mupen64plus-audio-omx master')
     fi
     if isPlatform "gles"; then
-        if  ! isPlatform "rpi" && ! isPlatform "sun50i-h6"; then
+        if  ! isPlatform "rpi"; then
             repos+=('mupen64plus mupen64plus-video-glide64mk2 master')
         fi
         if isPlatform "32bit"; then
@@ -220,7 +220,7 @@ function build_mupen64plus() {
     fi
 
     if isPlatform "gles"; then
-        if  ! isPlatform "rpi" && ! isPlatform "sun50i-h6"; then
+        if  ! isPlatform "rpi"; then
             md_ret_require+=('mupen64plus-video-glide64mk2/projects/unix/mupen64plus-video-glide64mk2.so')
         fi
         if isPlatform "32bit"; then
@@ -308,9 +308,7 @@ function configure_mupen64plus() {
         addEmulator 0 "${md_id}-auto" "n64" "$md_inst/bin/mupen64plus.sh AUTO %ROM%"
     else
         addEmulator 0 "${md_id}-GLideN64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res"
-        if  ! isPlatform "sun50i-h6"; then
-            addEmulator 0 "${md_id}-glide64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM% $res"
-        fi
+        addEmulator 0 "${md_id}-glide64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM% $res"
         if isPlatform "x86"; then
             ! isPlatform "kms" && res="640x480"
             addEmulator 0 "${md_id}-GLideN64-LLE" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res mupen64plus-rsp-cxd4-sse2"
