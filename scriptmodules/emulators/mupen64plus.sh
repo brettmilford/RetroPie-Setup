@@ -41,10 +41,19 @@ function _get_repos_mupen64plus() {
         repos+=('gizmo98 mupen64plus-audio-omx master')
     fi
     if isPlatform "gles"; then
-        ! isPlatform "rpi" && repos+=('mupen64plus mupen64plus-video-glide64mk2 master')
+        if  ! isPlatform "rpi"; then
+            repos+=('mupen64plus mupen64plus-video-glide64mk2 master')
+        fi
         if isPlatform "32bit"; then
-            repos+=('ricrpi mupen64plus-video-gles2rice pandora-backport')
+            if ! isPlatform "armbian"; then
+                repos+=('ricrpi mupen64plus-video-gles2rice pandora-backport')
+            fi
             repos+=('ricrpi mupen64plus-video-gles2n64 master')
+        fi
+        if isPlatform "armbian"; then
+            repos+=(
+                'mupen64plus mupen64plus-video-rice master'
+            )
         fi
     fi
     if isPlatform "gl"; then
@@ -152,7 +161,7 @@ function sources_mupen64plus() {
 }
 
 function build_mupen64plus() {
-    rpSwap on 750
+    rpSwap on 2500
 
     local dir
     local params=()
@@ -171,6 +180,7 @@ function build_mupen64plus() {
             isPlatform "armv7" && params+=("HOST_CPU=armv7")
             isPlatform "aarch64" && params+=("HOST_CPU=aarch64")
 
+            [[ "$dir" == "mupen64plus-video-glide64mk2" ]] && params+=("USE_FRAMESKIPPER=1")
             [[ "$dir" == "mupen64plus-ui-console" ]] && params+=("COREDIR=$md_inst/lib/" "PLUGINDIR=$md_inst/lib/mupen64plus/")
             make -C "$dir/projects/unix" "${params[@]}" clean
             # temporarily disable distcc due to segfaults with cross compiler and lto
@@ -210,10 +220,17 @@ function build_mupen64plus() {
     fi
 
     if isPlatform "gles"; then
-        ! isPlatform "rpi" && md_ret_require+=('mupen64plus-video-glide64mk2/projects/unix/mupen64plus-video-glide64mk2.so')
+        if  ! isPlatform "rpi"; then
+            md_ret_require+=('mupen64plus-video-glide64mk2/projects/unix/mupen64plus-video-glide64mk2.so')
+        fi
         if isPlatform "32bit"; then
-            md_ret_require+=('mupen64plus-video-gles2rice/pOPTFLrojects/unix/mupen64plus-video-rice.so')
+            if ! isPlatform "armbian"; then
+                md_ret_require+=('mupen64plus-video-gles2rice/projects/unix/mupen64plus-video-rice.so')
+            fi
             md_ret_require+=('mupen64plus-video-gles2n64/projects/unix/mupen64plus-video-n64.so')
+        fi
+        if isPlatform "armbian"; then
+            md_ret_require+=('mupen64plus-video-rice/projects/unix/mupen64plus-video-rice.so')
         fi
     fi
     if isPlatform "gl"; then
@@ -291,10 +308,13 @@ function configure_mupen64plus() {
         addEmulator 0 "${md_id}-auto" "n64" "$md_inst/bin/mupen64plus.sh AUTO %ROM%"
     else
         addEmulator 0 "${md_id}-GLideN64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res"
-        addEmulator 1 "${md_id}-glide64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM% $res"
+        addEmulator 0 "${md_id}-glide64" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-glide64mk2 %ROM% $res"
         if isPlatform "x86"; then
             ! isPlatform "kms" && res="640x480"
             addEmulator 0 "${md_id}-GLideN64-LLE" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res mupen64plus-rsp-cxd4-sse2"
+        fi
+        if isPlatform "armbian"; then
+            addEmulator 0 "${md_id}-rice" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% %XRES%x%YRES%"
         fi
     fi
     addSystem "n64"
@@ -377,6 +397,20 @@ function configure_mupen64plus() {
     else
         addAutoConf mupen64plus_audio 0
         addAutoConf mupen64plus_compatibility_check 0
+    fi
+
+    if isPlatform "armbian"; then
+        if ! grep -q "\[Video-General\]" "$config"; then
+            echo "[Video-General]" >> "$config"
+        fi
+        iniSet "VerticalSync" "True"
+
+
+        # Create GlideN64 section in .cfg
+        if ! grep -q "\[Video-Rice\]" "$config"; then
+            echo "[Video-Rice]" >> "$config"
+        fi
+        iniSet "ScreenUpdateSetting" "7"
     fi
 
     addAutoConf mupen64plus_hotkeys 1
