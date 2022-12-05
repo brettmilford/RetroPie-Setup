@@ -56,7 +56,7 @@ function _get_repos_mupen64plus() {
     fi
     if isPlatform "armbian"; then
         repos+=(
-            'upen64plus mupen64plus-video-rice master'
+            'mupen64plus mupen64plus-video-rice master'
         )
     fi
 
