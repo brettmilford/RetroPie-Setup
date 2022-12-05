@@ -41,8 +41,8 @@ function _get_repos_mupen64plus() {
         repos+=('gizmo98 mupen64plus-audio-omx master')
     fi
     if isPlatform "gles"; then
-        if ! isPlatform "rpi"; then
-            if ! isPlatform "H6"; then
+        if [ ! isPlatform "rpi" ]; then
+            if [ ! isPlatform "H6" ]; then
                 repos+=('mupen64plus mupen64plus-video-glide64mk2 master')
             fi
         fi
@@ -220,8 +220,8 @@ function build_mupen64plus() {
     fi
 
     if isPlatform "gles"; then
-        if ! isPlatform "rpi"; then
-            if ! isPlatform "H6"; then
+        if [ ! isPlatform "rpi" ]; then
+            if [ ! isPlatform "H6" ]; then
                 md_ret_require+=('mupen64plus-video-glide64mk2/projects/unix/mupen64plus-video-glide64mk2.so')
             fi
         fi
