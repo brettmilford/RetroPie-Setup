@@ -41,7 +41,7 @@ function _get_repos_mupen64plus() {
         repos+=('gizmo98 mupen64plus-audio-omx master')
     fi
     if isPlatform "gles"; then
-        ! isPlatform "rpi" || ! isPlatform "H6" && repos+=('mupen64plus mupen64plus-video-glide64mk2 master')
+        (! isPlatform "rpi" || ! isPlatform "H6") && repos+=('mupen64plus mupen64plus-video-glide64mk2 master')
         if isPlatform "32bit"; then
             repos+=('ricrpi mupen64plus-video-gles2rice pandora-backport')
             repos+=('ricrpi mupen64plus-video-gles2n64 master')
@@ -216,7 +216,7 @@ function build_mupen64plus() {
     fi
 
     if isPlatform "gles"; then
-        ! isPlatform "rpi" && ! isPlatform "H6" && md_ret_require+=('mupen64plus-video-glide64mk2/projects/unix/mupen64plus-video-glide64mk2.so')
+        (! isPlatform "rpi" || ! isPlatform "H6") && md_ret_require+=('mupen64plus-video-glide64mk2/projects/unix/mupen64plus-video-glide64mk2.so')
         if isPlatform "32bit"; then
             md_ret_require+=('mupen64plus-video-gles2rice/pOPTFLrojects/unix/mupen64plus-video-rice.so')
             md_ret_require+=('mupen64plus-video-gles2n64/projects/unix/mupen64plus-video-n64.so')
