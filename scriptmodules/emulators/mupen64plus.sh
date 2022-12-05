@@ -45,8 +45,15 @@ function _get_repos_mupen64plus() {
             repos+=('mupen64plus mupen64plus-video-glide64mk2 master')
         fi
         if isPlatform "32bit"; then
-            repos+=('ricrpi mupen64plus-video-gles2rice pandora-backport')
+            if ! isPlatform "armbian"; then
+                repos+=('ricrpi mupen64plus-video-gles2rice pandora-backport')
+            fi
             repos+=('ricrpi mupen64plus-video-gles2n64 master')
+        fi
+        if isPlatform "armbian"; then
+            repos+=(
+                'mupen64plus mupen64plus-video-rice master'
+            )
         fi
     fi
     if isPlatform "gl"; then
@@ -54,11 +61,6 @@ function _get_repos_mupen64plus() {
             'mupen64plus mupen64plus-video-glide64mk2 master'
             'mupen64plus mupen64plus-rsp-cxd4 master'
             'mupen64plus mupen64plus-rsp-z64 master'
-        )
-    fi
-    if isPlatform "armbian"; then
-        repos+=(
-            'mupen64plus mupen64plus-video-rice master'
         )
     fi
 
@@ -159,7 +161,7 @@ function sources_mupen64plus() {
 }
 
 function build_mupen64plus() {
-    rpSwap on 750
+    rpSwap on 1500
 
     local dir
     local params=()
@@ -222,8 +224,13 @@ function build_mupen64plus() {
             md_ret_require+=('mupen64plus-video-glide64mk2/projects/unix/mupen64plus-video-glide64mk2.so')
         fi
         if isPlatform "32bit"; then
-            md_ret_require+=('mupen64plus-video-gles2rice/pOPTFLrojects/unix/mupen64plus-video-rice.so')
+            if ! isPlatform "armbian"; then
+                md_ret_require+=('mupen64plus-video-gles2rice/pOPTFLrojects/unix/mupen64plus-video-rice.so')
+            fi
             md_ret_require+=('mupen64plus-video-gles2n64/projects/unix/mupen64plus-video-n64.so')
+        fi
+        if isPlatform "armbian"; then
+            md_ret_require+=('mupen64plus-video-rice/projects/unix/mupen64plus-video-rice.so')
         fi
     fi
     if isPlatform "gl"; then
@@ -236,9 +243,6 @@ function build_mupen64plus() {
         else
             md_ret_require+=('mupen64plus-rsp-cxd4/projects/unix/mupen64plus-rsp-cxd4.so')
         fi
-    fi
-    if isPlatform "armbian"; then
-        md_ret_require+=('mupen64plus-video-rice/projects/unix/mupen64plus-video-rice.so')
     fi
 }
 
@@ -311,9 +315,9 @@ function configure_mupen64plus() {
             ! isPlatform "kms" && res="640x480"
             addEmulator 0 "${md_id}-GLideN64-LLE" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-GLideN64 %ROM% $res mupen64plus-rsp-cxd4-sse2"
         fi
-    fi
-    if isPlatform "armbian"; then
-        addEmulator 0 "${md_id}-rice" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% %XRES%x%YRES%"
+        if isPlatform "armbian"; then
+            addEmulator 0 "${md_id}-rice" "n64" "$md_inst/bin/mupen64plus.sh mupen64plus-video-rice %ROM% %XRES%x%YRES%"
+        fi
     fi
     addSystem "n64"
 
