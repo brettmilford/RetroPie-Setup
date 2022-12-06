@@ -135,7 +135,7 @@ function depends_emulationstation() {
         libvlc-dev libvlccore-dev vlc
     )
 
-    compareVersions "$__os_debian_ver" gt 8 && depends+=(rapidjson-dev)
+    [[ "$__os_debian_ver" -gt 8 ]] && depends+=(rapidjson-dev)
     isPlatform "x11" && depends+=(gnome-terminal mesa-utils)
     if isPlatform "dispmanx" && ! isPlatform "osmc"; then
         depends+=(omxplayer)
@@ -195,7 +195,7 @@ function install_emulationstation() {
     )
 
     # This folder is present only from 2.8.x, don't include it for older releases
-    if compareVersions "$__os_debian_ver" gt 8; then
+    if [[ "$__os_debian_ver" -gt 8 ]]; then
         md_ret_files+=('resources')
     fi
 }
